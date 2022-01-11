@@ -110,6 +110,7 @@ export default async function oAuthCallback(params: {
       })
       tokens = new TokenSet(response.tokens)
     } else if (provider.idToken) {
+      checks.nonce = null;
       tokens = await client.callback(provider.callbackUrl, params, checks)
     } else {
       tokens = await client.oauthCallback(provider.callbackUrl, params, checks)
