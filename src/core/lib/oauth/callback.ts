@@ -1,4 +1,4 @@
-import { TokenSet } from "openid-client"
+import { OpenIDCallbackChecks, TokenSet } from "openid-client"
 import { openidClient } from "./client"
 import { oAuth1Client } from "./client-legacy"
 import { useState } from "./state-handler"
@@ -110,7 +110,8 @@ export default async function oAuthCallback(params: {
       })
       tokens = new TokenSet(response.tokens)
     } else if (provider.idToken) {
-      checks.nonce = null;
+      /* @ts-ignore */
+      const modifiedChecks: OpenIDCallbackChecks = { ...checks, nonce: null }
       tokens = await client.callback(provider.callbackUrl, params, checks)
     } else {
       tokens = await client.oauthCallback(provider.callbackUrl, params, checks)
